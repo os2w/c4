@@ -1,0 +1,31 @@
+testing machine: 
+Ubuntu 20.04.5 LTS on Windows 10 x86_64
+5.15.79.1-microsoft-standard-WSL2
+CPU: AMD Ryzen 5 2600 (4) @ 3.393GHz
+Memory: 351MiB / 11966MiB
+
+compiled with -O3:
+
+endeasy:
+avg time per solve: 0 ms
+avg nodes seen per solve: 69.145 nodes
+
+mideasy:
+avg time per solve: 0.259 ms
+avg nodes seen per solve: 1117.2 nodes
+
+midmedium:
+avg time per solve: 32.332 ms
+avg nodes seen per solve: 92534.7 nodes
+
+begeasy:
+avg time per solve: 7.663 ms
+avg nodes seen per solve: 20051.6 nodes
+
+begmedium:
+avg time per solve: 1931.05 ms
+avg nodes seen per solve: 4800320 nodes
+
+beghard:
+avg time per solve: N/A
+avg nodes seen per solve: N/A
