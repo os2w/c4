@@ -1,31 +1,48 @@
-testing machine: 
-Ubuntu 20.04.5 LTS on Windows 10 x86_64
-5.15.79.1-microsoft-standard-WSL2
-CPU: AMD Ryzen 5 2600 (4) @ 3.393GHz
-Memory: 11966MiB
+distro: Ubuntu 20.04.5 LTS on Windows 10 x86_64
+cpu: AMD Ryzen 5 2600 (4) @ 3.393GHz
+gpu: 8755:00:00.0 Microsoft Corporation Device 008e
+memory: 437MiB / 11966MiB
 
-compiled with -O3:
+--- 
 
 endeasy:
 avg time per solve: 0 ms
-avg nodes seen per solve: 69.145 nodes
+avg nodes seen per solve: 63 nodes
+passes: 1000
+fails: 0
+grade: 100%
 
 mideasy:
-avg time per solve: 0.259 ms
-avg nodes seen per solve: 1117.2 nodes
+avg time per solve: 0.17 ms
+avg nodes seen per solve: 693 nodes
+passes: 1000
+fails: 0
+grade: 100%
 
 midmedium:
-avg time per solve: 32.332 ms
-avg nodes seen per solve: 92534.7 nodes
+avg time per solve: 21.358 ms
+avg nodes seen per solve: 52525 nodes
+passes: 1000
+fails: 0
+grade: 100%
 
 begeasy:
-avg time per solve: 7.663 ms
-avg nodes seen per solve: 20051.6 nodes
+avg time per solve: 1.645 ms
+avg nodes seen per solve: 3872 nodes
+passes: 1000
+fails: 0
+grade: 100%
 
 begmedium:
-avg time per solve: 1931.05 ms
-avg nodes seen per solve: 4800320 nodes
+avg time per solve: 820.855 ms
+avg nodes seen per solve: 1792952 nodes
+passes: 1000
+fails: 0
+grade: 100%
 
 beghard:
-avg time per solve: N/A
-avg nodes seen per solve: N/A
+avg time per solve: 39078 ms
+avg nodes seen per solve: 94154808 nodes
+passes: 1000
+fails: 0
+grade: 100%
