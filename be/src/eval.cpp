@@ -112,20 +112,17 @@ std::vector<std::pair<u64, int>> eval::moves(bool& w, board_t b) {
 int eval::negamax(board_t b, int alpha, int beta) {
 	u64 h = hash(b);
 	int oalpha = alpha;
+	const int ops = (SIZE-(b.moves+1))/2+1;
 
 	total++;
 
 	auto o = movebook.table.find(h);
 	if(o != movebook.table.end()) return o->second;
 
-	const int ops = (SIZE-(b.moves+1))/2+1;
-
 	if(alpha < -ops) return -ops;
 	if(beta > ops) return ops;
 
 	if(b.moves == SIZE) return 0;
-
-//	if(!pnm(b))	{ return -(SIZE-b.moves)/2; }
 
 	bool w = false;
 	std::vector<std::pair<u64,int>> mvs = moves(w, b);
