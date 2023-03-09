@@ -1,0 +1,44 @@
+cpu: AMD Ryzen 5 2600 Six-Core Processor @ 3393.724 MHz
+mem: 11.058 GB
+
+endeasy:
+avg time per solve: 0 ms
+avg nodes seen per solve: 58 nodes
+passes: 1000
+fails: 0
+grade: 100%
+
+mideasy:
+avg time per solve: 0.12 ms
+avg nodes seen per solve: 529 nodes
+passes: 1000
+fails: 0
+grade: 100%
+
+midmedium:
+avg time per solve: 16.151 ms
+avg nodes seen per solve: 36501 nodes
+passes: 1000
+fails: 0
+grade: 100%
+
+begeasy:
+avg time per solve: 1.245 ms
+avg nodes seen per solve: 2804 nodes
+passes: 1000
+fails: 0
+grade: 100%
+
+begmedium:
+avg time per solve: 602.135 ms
+avg nodes seen per solve: 1257981 nodes
+passes: 1000
+fails: 0
+grade: 100%
+
+beghard:
+avg time per solve: 25428.4 ms
+avg nodes seen per solve: 57317396 nodes
+passes: 1000
+fails: 0
+grade: 100%

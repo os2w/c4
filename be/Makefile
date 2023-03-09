@@ -18,7 +18,6 @@ TEST_SH := ./test.sh
 
 CACHE_NAME := c4cache
 BOOK_NAME := c4book
-RES_NAME := test_results.txt
 
 .PHONY: solver test debug book clean
 
@@ -45,4 +44,4 @@ book: $(BOOK_SRC)
 	$(CXX) $(CXXFLAGS) -o $(BOOK_BIN_NAME) $(BOOK_SRC) $(SOLVER_SRC_DIR)/bits.cpp -I$(SOLVER_SRC_DIR)
 
 clean:
-	@$(RM) $(SOLVER_BIN_NAME) $(TESTBIN_NAME) $(BOOK_BIN_NAME) $(CACHE_NAME) $(BOOK_NAME) $(RES_NAME)
+	@$(RM) $(SOLVER_BIN_NAME) $(TESTBIN_NAME) $(BOOK_BIN_NAME) $(CACHE_NAME) $(BOOK_NAME)
