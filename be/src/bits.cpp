@@ -87,3 +87,14 @@ int scorepos(u64 b, u64 m) {
 	u64 r = pwm(b, m);
 	return __builtin_popcountll(r);
 }
+
+u64 pnm(board_t b) {
+	u64 T = (b.moves & 1) ? b.r : b.b,
+		m = b.r|b.b,
+		p = (m << 1) & ~m,
+		w = pwm(T, m),
+		f = p & w;
+
+	if(!f) return p;
+	return w;
+}

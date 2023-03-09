@@ -124,6 +124,8 @@ int eval::negamax(board_t b, int alpha, int beta) {
 
 	if(b.moves == SIZE) return 0;
 
+	if(!pnm(b)) return -(SIZE-b.moves)/2;
+
 	bool w = false;
 	std::vector<std::pair<u64,int>> mvs = moves(w, b);
 
