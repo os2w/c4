@@ -17,10 +17,11 @@ void test::testone(int& good, int& bad, std::string s) {
 	int sc = ev.score(b);
 	auto t2 = clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count();
-	float opt = (float)(ev.seen)/(float)(ev.total); 
+#ifndef NOOUT
+	float opt = (float)(ev.seen)/(float)(ev.total); 	
 	std::cout << toks[0] << " " << sc << " " << score << " " << (sc==score?"ok":"bad");
 	std::cout << " (seen: " << ev.seen << ", time: " << duration << " ms, opt: " << opt << "%)" << std::endl;
-
+#endif
 	savg += ev.seen;
 	tavg += duration;
 
@@ -40,7 +41,7 @@ void test::testall() {
 	std::cout << "avg time per solve: " <<
 		((float)tavg/(float)(good+bad)) << " ms" <<
 		"\navg nodes seen per solve: " <<
-		((float)savg/(float)(good+bad)) << " nodes" << std::endl;
+		savg/(good+bad) << " nodes" << std::endl;
 
 	std::cout << "passes: " << good << 
 		"\nfails: " << bad << 

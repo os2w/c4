@@ -11,3 +11,7 @@ u64 hash(board_t);
 
 void drop(board_t&, int);
 bool win(u64);
+
+u64 pwm(u64, u64);
+int scorepos(u64, u64);
+u64 pnm(board_t);

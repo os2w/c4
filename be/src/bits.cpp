@@ -40,21 +40,8 @@ u64 hash(board_t k) {
 
 void drop(board_t& b, int col) {
 	u64 v = ((b.r|b.b) >> (7*col)) & 0x3f;
-
-	if(v == 0x3f) {
-		return;
-	}
-
-	v+=(v==1); v+=(v==0);
-	v--;
-	v |= v >> 1;
-	v |= v >> 2;
-	v |= v >> 4;
-	v |= v >> 8;
-	v |= v >> 16;
-	v++;
-	v <<= 7*col;
-
+	if(v++ == 0x3f) return;
+	v <<= (7*col);
 	if(!(b.moves++ & 1)) b.r |= v;
 	else b.b |= v;
 }
@@ -69,4 +56,50 @@ bool win(u64 b) {
 	}
 
 	return false;
+}
+
+u64 pwm(u64 b, u64 m) {
+	u64 r, p;
+
+	r = (b<<1) & (b<<2) & (b<<3); // vertical
+
+#define P(o) \
+	p = (b<<(o)) & (b<<2*(o)); \
+	r |= p & (b<<3*(o)); \
+	r |= p & (b>>(o)); \
+	p = (b>>(o)) & (b>>2*(o)); \
+	r |= p & (b<<(o)); \
+	r |= p & (b>>3*(o));
+
+	P(HEIGHT+1); // horizontal
+	P(HEIGHT);   // diagonals
+	P(HEIGHT+2); //
+
+	r &= ~m;
+	r &= 0xFDFBF7EFDFBFULL;
+
+#undef P
+
+	return r;
+}
+
+int scorepos(u64 b, u64 m) {
+	u64 r = pwm(b, m);
+	return __builtin_popcountll(r);
+}
+
+u64 pnm(board_t b) {
+	const u64 add = 0x40810204081ULL;
+	u64 T = (b.moves & 1) ? b.r : b.b,
+		all = b.r|b.b,
+		p = (all + add) & ~all,
+		w = pwm(T, all),
+		f = p & w;
+
+	if(!f) return p;
+	if(f & (f-1)) {
+//		pboard({f,0});
+		return 0;
+	}
+	return f & ~(p>>1);
 }

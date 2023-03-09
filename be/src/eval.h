@@ -40,13 +40,9 @@ public:
 	std::size_t seen = 0;
 	std::size_t total = 0;
 		
-	u64 best(int, board_t);
-
 	int negamax(board_t, int, int);
-
-	int optsearch(board_t);
-
 	int score(board_t);
 
-	std::vector<u64> moves(bool&, board_t);
+	u64 winning(board_t);
+	std::vector<std::pair<u64,int>> moves(bool&, board_t);
 };

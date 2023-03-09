@@ -17,9 +17,13 @@ book::book(const char* fn) {
 			table[key] = score;
 		}
 
+#ifndef NOOUT
 		std::cerr << "loaded opening book" << std::endl;
+#endif
 	} else {
+#ifndef NOOUT
 		std::cerr << "no opening book found" << std::endl;
+#endif
 	}
 
 	i.close();
@@ -42,12 +46,15 @@ cache::cache(const char* fn) {
 		for(std::size_t n = 0; n < sz; n++) {
 			table[n].deserialize(i); 
 		}
-
+#ifndef NOOUT
 		std::cerr << "loaded cache" << std::endl;
+#endif
 	} else {
 		size = CSIZE;
 		table.resize(size);
+#ifndef NOOUT
 		std::cerr << "no cache was loaded" << std::endl;
+#endif
 	}
 
 	i.close();
@@ -79,18 +86,25 @@ eval::eval() : movebook("c4book"), table("c4cache") {
 	
 }
 
-std::vector<u64> eval::moves(bool& w, board_t b) {
-	std::vector<u64> mv;
+std::vector<std::pair<u64, int>> eval::moves(bool& w, board_t b) {
+	std::vector<std::pair<u64, int>> mv;
 	u64 U = (b.moves & 1) ? b.b : b.r;
+	u64 all = (b.r|b.b);
 
 	w = false;
 	for(int i : {3,4,2,1,5,6,0}) {
 		u64 v = ((b.r|b.b) >> (7*i)) & 0x3f;
 		if(v++==0x3f) continue;
 		v <<= (7*i);
-		mv.push_back(v);
+		mv.push_back(std::make_pair(v, scorepos(U|v, all)));
 		if(win(U|v)) { w = true; return mv; }
 	}
+
+	std::sort(mv.begin(), mv.end(), 
+		[&](std::pair<u64, int> m1, std::pair<u64, int> m2) {
+			return m1.second > m2.second;
+		}
+	);
 
 	return mv;
 }
@@ -105,15 +119,18 @@ int eval::negamax(board_t b, int alpha, int beta) {
 	if(o != movebook.table.end()) return o->second;
 
 	const int ops = (SIZE-(b.moves+1))/2+1;
+
 	if(alpha < -ops) return -ops;
 	if(beta > ops) return ops;
 
 	if(b.moves == SIZE) return 0;
 
-	bool w = false;
-	std::vector<u64> mvs = moves(w, b);
+//	if(!pnm(b))	{ return -(SIZE-b.moves)/2; }
 
-	if(w) return (SIZE-(b.moves+1))/2+1;
+	bool w = false;
+	std::vector<std::pair<u64,int>> mvs = moves(w, b);
+
+	if(w) return ops;
 
 	if(table.valid(h)) {
 		entry e = table.get(h);
@@ -130,11 +147,12 @@ int eval::negamax(board_t b, int alpha, int beta) {
 	seen++;
 
 	int value = -SIZE;
-	for(u64 m : mvs) {
+	for(auto mv : mvs) {
+		u64 m = mv.first;
 		if((b.moves++ & 1)) b.b |= m;
 		else b.r |= m;
 
-		value = std::max(value, -negamax(b, -beta, -alpha));	
+		value = std::max(value, -negamax(b, -alpha-1, -alpha));	
 
 		if((--b.moves & 1)) b.b &= ~m;
 		else b.r &= ~m;
@@ -152,7 +170,7 @@ int eval::negamax(board_t b, int alpha, int beta) {
 	return value;
 }
 
-int eval::optsearch(board_t b) {
+int eval::score(board_t b) {
 	int min = -(SIZE-b.moves-1)/2-4;
 	int max = -min;
 
@@ -166,36 +184,4 @@ int eval::optsearch(board_t b) {
 	}
 
 	return min;
-}
-
-int eval::score(board_t b) {
-	return optsearch(b);
-}
-
-u64 eval::best(int p, board_t b) {
-	bool w = false;
-	std::vector<u64> mv = moves(w, b);
-	std::vector<std::pair<u64, int>> mvs;
-
-	if(w) return *(mv.end());
-
-	for(u64 m : mv) {
-		if(!p) b.r |= m;
-		else b.b |= m;
-		b.moves++;
-
-		int s = score(b);
-
-		if(!p) b.r &= ~m;
-		else b.b &= ~m;
-		b.moves--;
-
-		std::cout<<std::hex<<"move " << m << " score: " <<std::dec<<s << std::endl;
-		mvs.push_back(std::make_pair(m, s));
-	}
-
-	return (*std::max_element(mvs.begin(), mvs.end(), 
-		[](std::pair<u64,int> a, std::pair<u64,int> b) {
-			return a.second < b.second;
-		})).first;
 }
